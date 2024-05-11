@@ -1,28 +1,27 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+
 
 const Footer = () => {
   return (
     <View style={styles.container}>
       
       <View style={styles.containerButtons}>
-        
-        <TouchableOpacity style={styles.button1}>
-            <Text>Botão 1</Text>
+        <TouchableOpacity>
+            <Image source = {require('./imagensIconesFooter/login.png')} style={styles.button1}/>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button2}>
-            <Text>Botão 2</Text>
+            <Image source = {require('./imagensIconesFooter/home.png')} style={styles.button2}/>
         </TouchableOpacity>
-
+            
         <TouchableOpacity style={styles.button3}>
-            <Text>Botão 2</Text>
+            <Image source = {require('./imagensIconesFooter/carrinho.png')} style={styles.button3}/>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button4}>
-            <Text>Botão 2</Text>
+            <Image source = {require('./imagensIconesFooter/favorito.png')} style={styles.button4}/>
         </TouchableOpacity>
-      
       </View>
     </View>
   );
@@ -38,30 +37,39 @@ const styles = StyleSheet.create({
     paddingBottom:0,
   },
 
-  text: {
-    color: 'white',
-    fontSize: 16,
-  },
 
   containerButtons:{
     flexDirection: 'row',
     justifyContent: 'space-around',
-    alignItems: 'center',
+    alignitems: 'center',
   },
 
   button1:{
-    marginLeft: -80,
+    width: 40,
+    height: 40,
+    position: 'relative',
+    left: -80,
   },
 
   button2:{
-    marginLeft: 20,
+    position: 'relative',
+    width: 40,
+    height: 40,
+    left: -10,
   },
 
   button3:{
-    marginLeft: 20,
+    position: 'relative',
+    width: 40,
+    height: 40,
+    left: 20,
   },
 
   button4:{
+    width: 40,
+    height: 40,
+    position: 'relative',
+    left: 40,
   },
 });
 

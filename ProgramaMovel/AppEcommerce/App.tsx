@@ -10,7 +10,7 @@ export default function App() {
   return (
     <View style={styles.container}>
         <View style={styles.containerConteudoPrincipal}>
-          <Text>Aaaaaaaaaaaaa</Text>
+          
         </View>
         <Footer/>
     </View>
@@ -27,4 +27,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#3203541',
   },
+
+  containerProduto :{
+  },
+
+  containerProdutosLinha :{
+  }
+
 });
