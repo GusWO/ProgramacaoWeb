@@ -4,10 +4,15 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 const Produtos = () => {
   // Array de produtos
   const produtos = [
-    { id: 1, nome: 'Produto 1', imagem: require('./imagens/produto1.png') },
-    { id: 2, nome: 'Produto 2', imagem: require('./imagens/produto2.png') },
-    { id: 3, nome: 'Produto 3', imagem: require('./imagens/produto3.png') },
-    // Adicione mais produtos conforme necessário
+    { id: 1, nome: 'Alexa', imagem: require('./imagensProdutos/AlexaProduto.jpg') },
+    { id: 2, nome: 'Fone de Celular', imagem: require('./imagensProdutos/FoneCelularProduto.jpg') },
+    { id: 3, nome: 'Produto 3', imagem: require('./imagensProdutos/FoneProduto.jpg') },
+    { id: 4, nome: '', imagem: require('./imagensProdutos/ImpressoraProduto.jpg')},
+    { id: 5, nome: '', imagem: require('./imagensProdutos/SmartWatchProduto.jpg')},
+    {},
+    {},
+    {},
+    {},
   ];
 
   // Função para lidar com o clique no botão de favoritos
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   botaoContainer: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-around',
     width: '100%',
   },
