@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Button, Image } from 'react-n
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import Produtos from './Produtos'
+import Login from './Login'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
@@ -14,7 +15,7 @@ export default function App() {
 
         <Tab.Screen options = {{tabBarLabel:'Login' , tabBarIcon: () => (
           <Image source={require('./imagensIconesFooter/login.png')} style={styles.iconProduto}/>
-        )}} name="Login" component={Produtos}/>
+        )}} name="Login" component={Login}/>
 
         <Tab.Screen options = {{tabBarLabel:'Produtos', tabBarIcon: () => (
             <Image  source= {require('./imagensIconesFooter/home.png')} style={styles.iconProduto}  />

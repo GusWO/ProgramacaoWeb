@@ -8,15 +8,9 @@ const Stack = createStackNavigator();
 
 const Navigation: React.FC = () => {
   return (
-    
-
-      
 
         <Stack.Screen name="App" component={App} options={{ headerShown: false }} />
       
-      
-    
-    
   );
 };
 
