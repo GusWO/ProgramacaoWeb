@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RootStackParamList = {
   Login: undefined;
@@ -13,15 +14,36 @@ const Login: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  const handleLogin = () => {
-    // Lógica de autenticação aqui
-    navigation.navigate('Produtos');
+  const saveData = async (data: { email: string; senha: string }) => {
+    try {
+      await AsyncStorage.setItem('userData', JSON.stringify(data));
+      Alert.alert('Cadastro', 'Cadastro realizado com sucesso!');
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível salvar os dados');
+    }
   };
 
-  const handleCadastro = () => {
-    // Lógica de cadastro aqui
-    // Você pode adicionar validação e integração com backend conforme necessário
-    alert('Cadastro realizado com sucesso!');
+  const readData = async () => {
+    try {
+      const data = await AsyncStorage.getItem('userData');
+      return data ? JSON.parse(data) : null;
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível ler os dados');
+      return null;
+    }
+  };
+
+  const handleLogin = async () => {
+    const userData = await readData();
+    if (userData && userData.email === email && userData.senha === senha) {
+      navigation.navigate('Produtos');
+    } else {
+      Alert.alert('Erro', 'Email ou senha incorretos');
+    }
+  };
+
+  const handleCadastro = async () => {
+    await saveData({ email, senha });
   };
 
   return (
