@@ -21,13 +21,13 @@ export default function App() {
           ), }} name="Produtos" component={Produtos} />
           {/* Tab home dos produtos*/}
           
-        <Tab.Screen options = {{tabbarLabel: 'Carrinho', tabBarIcon: () =>( 
+        <Tab.Screen options = {{tabBarLabel: 'Carrinho', tabBarIcon: () =>( 
           <Image source={require('./imagensIconesFooter/carrinho.png')} style={styles.iconProduto}/>)}} name="Carrinho" component={Produtos} />
           {/* Tab carrinho dos produtos*/}
 
         <Tab.Screen options = {{tabBarLabel: 'Favoritos', tabBarIcon: () => (
           <Image source={require('./imagensIconesFooter/favorito.png')} style={styles.iconProduto}/>)}} name="Favoritos"component={Produtos}/>
-
+          {/* tab favoritos */}
         
       </Tab.Navigator>
     </NavigationContainer>
