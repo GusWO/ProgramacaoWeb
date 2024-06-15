@@ -1,45 +1,41 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { AppContext } from './AppContext';
 
 const Produtos = () => {
-  // Array de produtos
+  const { adicionarAoCarrinho, adicionarAosFavoritos } = useContext(AppContext);
+
   const produtos = [
     { id: 1, nome: 'Alexa', imagem: require('./imagensProdutos/AlexaProduto.jpg') },
     { id: 2, nome: 'Fone de Celular', imagem: require('./imagensProdutos/FoneCelularProduto.jpg') },
-    { id: 3, nome: 'Produto 3', imagem: require('./imagensProdutos/FoneProduto.jpg') },
-    { id: 4, nome: '', imagem: require('./imagensProdutos/ImpressoraProduto.jpg')},
-    { id: 5, nome: '', imagem: require('./imagensProdutos/SmartWatchProduto.jpg')},
-    {},
-    {},
-    {},
-    {},
+    { id: 3, nome: 'Fone', imagem: require('./imagensProdutos/FoneProduto.jpg') },
+    { id: 4, nome: 'Impressora', imagem: require('./imagensProdutos/ImpressoraProduto.jpg') },
+    { id: 5, nome: 'SmartWatch', imagem: require('./imagensProdutos/SmartWatchProduto.jpg') },
+    { id: 6, nome: '', imagem: require('') },
+    { id: 7, nome: '', imagem: require('') },
+    { id: 8, nome: '', imagem: require('') },
+    { id: 9, nome: '', imagem: require('') },
   ];
 
-  // Função para lidar com o clique no botão de favoritos
-  const handleFavoritos = (produtoId: number) => {
-    // Implemente sua lógica para adicionar/remover o produto dos favoritos
-    console.log(`Produto ${produtoId} adicionado aos favoritos`);
+  const handleFavoritos = (produto) => {
+    adicionarAosFavoritos(produto);
   };
 
-  // Função para lidar com o clique no botão de carrinho
-  const handleCarrinho = (produtoId: number) => {
-    // Implemente sua lógica para adicionar o produto ao carrinho
-    console.log(`Produto ${produtoId} adicionado ao carrinho`);
+  const handleCarrinho = (produto) => {
+    adicionarAoCarrinho(produto);
   };
 
   return (
     <View style={styles.container}>
-      {/* Mapeia os produtos e renderiza cada um */}
       {produtos.map((produto) => (
         <View key={produto.id} style={styles.produto}>
           <Image source={produto.imagem} style={styles.imagemProduto} />
           <Text>{produto.nome}</Text>
-          {/* Botões de favoritos e carrinho */}
           <View style={styles.botaoContainer}>
-            <TouchableOpacity onPress={() => handleFavoritos(produto.id)} style={styles.botao}>
+            <TouchableOpacity onPress={() => handleFavoritos(produto)} style={styles.botao}>
               <Text>Favoritos</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleCarrinho(produto.id)} style={styles.botao}>
+            <TouchableOpacity onPress={() => handleCarrinho(produto)} style={styles.botao}>
               <Text>Carrinho</Text>
             </TouchableOpacity>
           </View>
@@ -77,6 +73,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightblue',
     padding: 5,
     borderRadius: 5,
+    marginVertical: 5,
+    textAlign: 'center'
   },
 });
 

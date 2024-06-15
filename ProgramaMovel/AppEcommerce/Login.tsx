@@ -1,49 +1,39 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type RootStackParamList = {
-  Login: undefined;
-  Produtos: undefined;
-};
-
-type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
-
-const Login: React.FC<Props> = ({ navigation }) => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-  const saveData = async (data: { email: string; senha: string }) => {
-    try {
-      await AsyncStorage.setItem('userData', JSON.stringify(data));
-      Alert.alert('Cadastro', 'Cadastro realizado com sucesso!');
-    } catch (error) {
-      Alert.alert('Erro', 'Não foi possível salvar os dados');
-    }
-  };
-
-  const readData = async () => {
-    try {
-      const data = await AsyncStorage.getItem('userData');
-      return data ? JSON.parse(data) : null;
-    } catch (error) {
-      Alert.alert('Erro', 'Não foi possível ler os dados');
-      return null;
+  const handleCadastro = async () => {
+    if (email && senha) {
+      try {
+        const userData = { email, senha };
+        Alert.alert('aqui funfou')
+        await AsyncStorage.setItem('userData', JSON.stringify(userData));
+        Alert.alert('Cadastro', 'Cadastro realizado com sucesso!');
+      } catch (error) {
+        Alert.alert('Erro', 'Não foi possível salvar os dados');
+      }
+    } else {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos');
     }
   };
 
   const handleLogin = async () => {
-    const userData = await readData();
-    if (userData && userData.email === email && userData.senha === senha) {
-      navigation.navigate('Produtos');
-    } else {
-      Alert.alert('Erro', 'Email ou senha incorretos');
-    }
-  };
+    try {
+      const jsonValue = await AsyncStorage.getItem('userData');
+      const userData = jsonValue != null ? JSON.parse(jsonValue) : null;
 
-  const handleCadastro = async () => {
-    await saveData({ email, senha });
+      if (userData?.email === email && userData?.senha === senha) {
+        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+      } else {
+        Alert.alert('Erro', 'Email ou senha incorretos');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Não foi possível realizar o login');
+    }
   };
 
   return (
