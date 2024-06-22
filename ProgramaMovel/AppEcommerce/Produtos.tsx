@@ -11,10 +11,10 @@ const Produtos = () => {
     { id: 3, nome: 'Fone', imagem: require('./imagensProdutos/FoneProduto.jpg') },
     { id: 4, nome: 'Impressora', imagem: require('./imagensProdutos/ImpressoraProduto.jpg') },
     { id: 5, nome: 'SmartWatch', imagem: require('./imagensProdutos/SmartWatchProduto.jpg') },
-    { id: 6, nome: '', imagem: require('') },
-    { id: 7, nome: '', imagem: require('') },
-    { id: 8, nome: '', imagem: require('') },
-    { id: 9, nome: '', imagem: require('') },
+    { id: 6, nome: 'RTX 4060', imagem: require('./imagensProdutos/notebook.jpg') },
+    { id: 7, nome: 'Notebook', imagem: require('./imagensProdutos/notebook.jpg') },
+    { id: 8, nome: 'Processador AMD', imagem: require('./imagensProdutos/processador-amd-ryzen-7-5700g-3-8ghz-4-6ghz-max-turbo-am4-video-integrado-8-nucleos-100-100000263box_1627588652_m.jpg') },
+    { id: 9, nome: 'Placa mãe', imagem: require('./imagensProdutos/placa-mae-msi-a520m-a-pro-amd-am4-matx-ddr4_1646852577_g.jpg') },
   ];
 
   const handleFavoritos = (produto) => {

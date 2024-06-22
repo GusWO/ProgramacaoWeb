@@ -23,12 +23,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   // Função para adicionar um produto aos favoritos
   const adicionarAosFavoritos = (produto: any) => {
-    setFavoritos([favoritos, produto]);
+    setFavoritos((prevFavoritos) => [...prevFavoritos, produto]);
   };
 
   // Função para adicionar um produto ao carrinho
   const adicionarAoCarrinho = (produto: any) => {
-    setCarrinho([carrinho, produto]);
+    setCarrinho((prevCarrinho) => [...prevCarrinho, produto]);
   };
 
   // Valores do contexto que serão compartilhados
