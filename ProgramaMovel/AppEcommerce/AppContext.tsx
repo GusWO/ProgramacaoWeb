@@ -1,44 +1,155 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-type AppContextType = {
-  favoritos: any[]; 
-  carrinho: any[]; 
-  adicionarAosFavoritos: (produto: any) => void;
-  adicionarAoCarrinho: (produto: any) => void;
+type Produto = {
+  id: number;
+  nome: string;
+  imagem: any;
+  valor: number;
 };
 
-// Criar o contexto inicial com valores padrão
+type AppContextType = {
+  userId: string | null;
+  favoritos: Produto[];
+  carrinho: Produto[];
+  quantidades: number[];
+  adicionarAosFavoritos: (produto: Produto) => void;
+  adicionarAoCarrinho: (produto: Produto) => void;
+  removerDoCarrinho: (produtoId: number) => void;
+  removerDosFavoritos: (produtoId: number) => void;
+  setQuantidades: React.Dispatch<React.SetStateAction<number[]>>;
+  setCarrinho: React.Dispatch<React.SetStateAction<Produto[]>>;
+  salvarEstado: () => void;
+  carregarEstado: (userId: string) => void;
+  logout: () => void;
+  setUserId: React.Dispatch<React.SetStateAction<string | null>>;
+};
+
 export const AppContext = createContext<AppContextType>({
+  userId: null,
   favoritos: [],
   carrinho: [],
+  quantidades: [],
   adicionarAosFavoritos: () => {},
   adicionarAoCarrinho: () => {},
+  removerDoCarrinho: () => {},
+  removerDosFavoritos: () => {},
+  setQuantidades: () => {},
+  setCarrinho: () => {},
+  salvarEstado: () => {},
+  carregarEstado: () => {},
+  logout: () => {},
+  setUserId: () => {},
 });
 
-// Componente Provedor do Contexto
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [favoritos, setFavoritos] = useState<any[]>([]);
-  const [carrinho, setCarrinho] = useState<any[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [favoritos, setFavoritos] = useState<Produto[]>([]);
+  const [carrinho, setCarrinho] = useState<Produto[]>([]);
+  const [quantidades, setQuantidades] = useState<number[]>([]);
 
-  // Função para adicionar um produto aos favoritos
-  const adicionarAosFavoritos = (produto: any) => {
-    setFavoritos((prevFavoritos) => [...prevFavoritos, produto]);
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const storedUserId = await AsyncStorage.getItem('userId');
+      if (storedUserId) {
+        setUserId(storedUserId);
+        carregarEstado(storedUserId);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  const salvarEstado = async () => {
+    const userData = {
+      favoritos,
+      carrinho,
+      quantidades,
+    };
+    if (userId) {
+      await AsyncStorage.setItem(`userData_${userId}`, JSON.stringify(userData));
+    }
   };
 
-  // Função para adicionar um produto ao carrinho
-  const adicionarAoCarrinho = (produto: any) => {
-    setCarrinho((prevCarrinho) => [...prevCarrinho, produto]);
+  const carregarEstado = async (userId: string) => {
+    const jsonValue = await AsyncStorage.getItem(`userData_${userId}`);
+    const userData = jsonValue != null ? JSON.parse(jsonValue) : null;
+    if (userData) {
+      setFavoritos(userData.favoritos);
+      setCarrinho(userData.carrinho);
+      setQuantidades(userData.quantidades);
+    }
   };
 
-  // Valores do contexto que serão compartilhados
-  const contextValues: AppContextType = {
-    favoritos,
-    carrinho,
-    adicionarAosFavoritos,
-    adicionarAoCarrinho,
+  const logout = async () => {
+    await AsyncStorage.removeItem('userId');
+    setUserId(null);
+    setFavoritos([]);
+    setCarrinho([]);
+    setQuantidades([]);
   };
 
-  // Retorna o provedor do contexto com os valores fornecidos
-  return <AppContext.Provider value={contextValues}>{children}</AppContext.Provider>;
+  const adicionarAosFavoritos = (produto: Produto) => {
+    if (!favoritos.find((item) => item.id === produto.id)) {
+      const novosFavoritos = [...favoritos, produto];
+      setFavoritos(novosFavoritos);
+      salvarEstado();
+    }
+  };
+
+  const adicionarAoCarrinho = (produto: Produto) => {
+    const index = carrinho.findIndex((item) => item.id === produto.id);
+    if (index === -1) {
+      const novoCarrinho = [...carrinho, produto];
+      const novasQuantidades = [...quantidades, 1];
+      setCarrinho(novoCarrinho);
+      setQuantidades(novasQuantidades);
+      salvarEstado();
+    } else {
+      const newQuantidades = [...quantidades];
+      newQuantidades[index] += 1;
+      setQuantidades(newQuantidades);
+      salvarEstado();
+    }
+  };
+
+  const removerDoCarrinho = (produtoId: number) => {
+    const index = carrinho.findIndex((item) => item.id === produtoId);
+    if (index !== -1) {
+      const novoCarrinho = carrinho.filter((item) => item.id !== produtoId);
+      const novasQuantidades = quantidades.filter((_, i) => i !== index);
+      setCarrinho(novoCarrinho);
+      setQuantidades(novasQuantidades);
+      salvarEstado();
+    }
+  };
+
+  const removerDosFavoritos = (produtoId: number) => {
+    const novosFavoritos = favoritos.filter((item) => item.id !== produtoId);
+    setFavoritos(novosFavoritos);
+    salvarEstado();
+  };
+
+  return (
+    <AppContext.Provider
+      value={{
+        userId,
+        favoritos,
+        carrinho,
+        quantidades,
+        adicionarAosFavoritos,
+        adicionarAoCarrinho,
+        removerDoCarrinho,
+        removerDosFavoritos,
+        setQuantidades,
+        setCarrinho,
+        salvarEstado,
+        carregarEstado,
+        logout,
+        setUserId,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 };
